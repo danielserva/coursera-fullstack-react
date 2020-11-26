@@ -14,7 +14,7 @@ class Dishdetail extends Component {
         if (comments != null){
             const commentList = comments.map((commentNode) =>
                 <li key={commentNode.id}>
-                    <p>{commentNode.comment} <br></br> --{commentNode.author},{ new Date(commentNode.date).toLocaleDateString()}</p>
+                    <p>{commentNode.comment} </p> --{commentNode.author},{ new Date(commentNode.date).toLocaleDateString()}
                 </li>
             );
             return (<div><h4>Comments</h4>
@@ -48,13 +48,15 @@ class Dishdetail extends Component {
         const dish = this.props.dish;
         if (dish != null){
 
-            return(<div className="row">
+            return(<div className="container">
+                <div className="row">
                     <div className="col-12 col-md-5 m-1">
                         {this.renderDish(dish)}
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         {this.renderComments(dish.comments)}
                     </div>
+                </div>
                 </div>
             );
 
