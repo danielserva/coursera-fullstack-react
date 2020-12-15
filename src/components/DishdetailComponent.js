@@ -23,17 +23,22 @@ class CommentForm extends Component {
     });
   }
 
+  handleSubmit(values) {
+    this.toggleModal();
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+  }
+
   render() {
     return (
       <div>
         <Button outline onClick={this.toggleModal}>
-          <span className="fa fa-edit fa-lg"></span> Submit Comment
+          <span className="fa fa-pencil fa-lg"></span> Submit Comment
         </Button>
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
           <ModalBody>
             <div className="col-12 col-md-9">
-              <LocalForm onSubmit={this.handleSubmit}>
+              <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                 <Row className="form-group">
                   <Label htmlFor="rating">Rating</Label>
                   <Control.select model=".rating" name="rating" 
@@ -59,7 +64,7 @@ class CommentForm extends Component {
                       model=".author"
                       show="touched"
                       messages={{
-                          minLength: 'Must be greater than 3 characters',
+                          minLength: 'Must be greater than 2	q	 characters',
                           maxLength: 'Must be 15 characters or less'
                       }}
                     />
@@ -81,7 +86,7 @@ class CommentForm extends Component {
   }
 }
 
-function RenderComments({comments}){
+function RenderComments({comments, addComment, dishId}){
   if (comments != null){
     const commentList = comments.map((commentNode) =>
       <li key={commentNode.id}>
@@ -90,7 +95,9 @@ function RenderComments({comments}){
     );
     return (<div><h4>Comments</h4>
         <ul className="list-unstyled text-left">{commentList}</ul>
-        <CommentForm isModalOpen={false} />
+        <CommentForm isModalOpen={false} 
+          dishId={dishId}
+          addComment={addComment} />
         </div>);
   } else {
     return (
@@ -134,12 +141,10 @@ const DishDetail = (props) => {
           </div>
         </div>
         <div className="row">
-          <div className="col-12 col-md-5 m-1">
             <RenderDish dish={props.dish} />
-          </div>
-          <div className="col-12 col-md-5 m-1">
-            <RenderComments comments={props.comments} />
-          </div>
+            <RenderComments comments={props.comments}
+              addComment={props.addComment}
+              dishId={props.dish.id} />
         </div>
       </div>
     );
